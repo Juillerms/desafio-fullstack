@@ -31,6 +31,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/auth/login").permitAll(); // Login é público
                     req.requestMatchers("/h2-console/**").permitAll(); // Se estiver usando H2 console
+                    req.requestMatchers(HttpMethod.GET, "/vendas").permitAll(); // <<--- ADICIONE ISTO
+                    req.requestMatchers(HttpMethod.GET, "/vendas/**").permitAll(); // Para /vendas/{id} também
                     req.anyRequest().authenticated(); // Todas as outras requisições precisam de autenticação
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -45,6 +47,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Usado para codificar senhas (não diretamente neste exemplo de usuário estático)
+        return new BCryptPasswordEncoder(); 
     }
 }

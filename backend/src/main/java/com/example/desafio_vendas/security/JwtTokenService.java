@@ -14,7 +14,7 @@ import java.time.ZoneOffset;
 @Service
 public class JwtTokenService {
 
-    @Value("${api.security.token.secret}") // Defina no application.properties
+    @Value("${api.security.token.secret}")
     private String secret;
 
     private static final String ISSUER = "VendasMonitoringAPI";
@@ -41,7 +41,7 @@ public class JwtTokenService {
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            return null; // Ou lançar uma exceção específica
+            return null; 
         }
     }
 

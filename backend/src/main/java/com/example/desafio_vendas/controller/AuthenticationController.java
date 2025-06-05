@@ -28,7 +28,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<TokenJWTDTO> login(@RequestBody @Valid UsuarioLoginDTO dadosLogin) {
+    public ResponseEntity<TokenJWTDTO> login(@RequestBody UsuarioLoginDTO dadosLogin) {
         // Validação do usuário estático
         // Em um cenário real, você usaria o AuthenticationManager do Spring Security
         // e um UserDetailsService para validar contra um banco de dados.
