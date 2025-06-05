@@ -3,9 +3,13 @@ import './App.css';
 import BarChart from './components/BarChart';
 import LineChart from './components/LineChart';
 import Filters from './components/Filters';
-import { fetchVendas, fetchVendaById } from './services/api';
+import Login from './components/Login';
+import { fetchVendas, fetchVendaById, logout } from './services/api';
 
 function App() {
+
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
+
   const [vendas, setVendas] = useState([]);
   const [filteredVendas, setFilteredVendas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,21 +33,44 @@ function App() {
           return obj;
         }, {});
       
-      console.log("Filtros aplicados na API:", activeFilters);
       const data = await fetchVendas(activeFilters);
-      setVendas(data);
-      setFilteredVendas(data); 
+      setVendas(data || []); // Garante que seja um array
+      setFilteredVendas(data || []);
     } catch (err) {
       console.error("Erro ao buscar vendas no App.js:", err);
-      setError(err.detalhe || err.message || 'Falha ao carregar os dados das vendas.');
+      // Se o erro for de autenticação (ex: 403 Forbidden ou 401 Unauthorized), deslogue o usuário
+      if (err.status === 401 || err.status === 403) {
+        handleLogout();
+      } else {
+        setError(err.detalhe || err.message || 'Falha ao carregar os dados das vendas.');
+      }
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    loadVendas(); 
-  }, [loadVendas]);
+    if (isAuthenticated) {
+      loadVendas();
+    } else {
+      // Se não estiver autenticado, não precisa carregar os dados
+      // e podemos limpar o estado para garantir que não haja dados antigos.
+      setLoading(false);
+      setVendas([]);
+      setFilteredVendas([]);
+    }
+  }, [isAuthenticated, loadVendas]);
+
+  // Função para ser chamada pelo componente Login
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
+
+  // Função de Logout
+  const handleLogout = () => {
+    logout(); // Chama a função de api.js para limpar o localStorage
+    setIsAuthenticated(false); // Atualiza o estado para mostrar a tela de login
+  };
 
   const handleFilterChange = (filters) => {
     console.log("Novos filtros recebidos:", filters);
@@ -78,18 +105,24 @@ const handleBuscarVendaPorId = async () => {
   }
 };
 
-  if (loading) {
+  if (!isAuthenticated) {
+    // Se não estiver autenticado, mostra a tela de login
+    return <Login onLoginSuccess={handleLoginSuccess} />;
+  }
+
+  /*if (loading) {
     return <div className="App-loading">Carregando dados...</div>;
   }
 
   if (error) {
     return <div className="App-error">Erro: {error}</div>;
-  }
+  }*/
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Dashboard de Vendas</h1>
+        <button onClick={handleLogout} className="logout-button">Sair</button>
       </header>
       <main className="App-main">
 

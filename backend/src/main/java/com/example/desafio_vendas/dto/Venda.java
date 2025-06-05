@@ -14,5 +14,5 @@ public class Venda {
     private String nomeProduto;
     private int quantidadeVendida;
     private LocalDate dataVenda;
-    private BigDecimal valorTotal; // Opcional, mas recomendado
+    private BigDecimal valorTotal; 
 }

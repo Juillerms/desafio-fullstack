@@ -31,7 +31,6 @@ export const fetchVendas = async (params) => {
   }
 };
 
-// Se você tiver um endpoint de login para obter o token JWT
 export const login = async (credentials) => {
   try {
     const response = await apiClient.post('/auth/login', credentials); // Certifique-se que o endpoint é /auth/login
@@ -48,8 +47,6 @@ export const login = async (credentials) => {
 
 export const logout = () => {
     localStorage.removeItem('authToken');
-    // Você pode querer deletar o header do axios também, ou apenas confiar no interceptor
-    // delete apiClient.defaults.headers.common['Authorization'];
 };
 
 export const fetchVendaById = async (idVenda) => {

@@ -21,8 +21,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenService jwtTokenService;
 
-    // Para o usuário estático, não precisamos de um UserDetailsService complexo agora.
-    // Em um cenário real, você usaria um UserDetailsService para carregar dados do usuário do banco.
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -32,11 +30,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (tokenJWT != null) {
             String subject = jwtTokenService.validarToken(tokenJWT);
             if (subject != null) {
-                // Para o usuário estático "admin"
-                // Em um app real, você carregaria o UserDetails do banco aqui
+                
                 UserDetails userDetails = User.withUsername(subject)
-                                            .password("") // A senha não é necessária aqui, pois o token já foi validado
-                                            .authorities(Collections.emptyList()) // Adicione roles/authorities se necessário
+                                            .password("") 
+                                            .authorities(Collections.emptyList()) 
                                             .build();
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

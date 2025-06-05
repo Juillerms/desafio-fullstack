@@ -18,7 +18,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (vendaRepository.count() == 0) { // Popula somente se o banco estiver vazio
+        if (vendaRepository.count() == 0) { 
             popularVendasSimuladas();
         }
     }

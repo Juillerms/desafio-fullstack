@@ -5,6 +5,7 @@
 }
 
 .App-header {
+  position: relative;
   background-color: #282c34;
   padding: 20px;
   color: white;
@@ -154,4 +155,88 @@ table tbody tr:nth-child(even) {
 
 table tbody tr:hover {
   background-color: #f1f1f1; 
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.login-form {
+  padding: 40px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #282c34;
+}
+
+.login-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.login-form .form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.login-form .form-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form .form-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+.logout-button {
+  position: absolute;
+  top: 50%; /* Centraliza verticalmente */
+  transform: translateY(-50%); /* Ajuste fino para centralização vertical */
+  right: 20px; /* Distância da direita */
+  background-color: #61dafb; /* Cor de destaque, pode ser outra */
+  color: #282c34; /* Texto escuro para contraste */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.logout-button:hover {
+  background-color: #ffffff; /* Fica branco ao passar o mouse */
 }

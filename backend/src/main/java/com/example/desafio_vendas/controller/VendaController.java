@@ -24,30 +24,23 @@ public class VendaController {
     private VendaService vendaService;
 
     /**
-     * Lista vendas, com capacidade de filtro por data de início e data de fim.
-     * Os parâmetros de data são opcionais.
-     * Se nenhum parâmetro de data for fornecido, todas as vendas são retornadas.
-     * Se dataInicio for fornecida, filtra a partir dessa data.
-     * Se dataFim for fornecida, filtra até essa data.
-     * Se ambas forem fornecidas, filtra dentro do intervalo.
+     .
      *
      * @param dataInicio Data de início do filtro (formato YYYY-MM-DD).
      * @param dataFim    Data de fim do filtro (formato YYYY-MM-DD).
-     * @return ResponseEntity contendo a lista de Vendas ou noContent se nenhuma for encontrada.
+     * @return 
      */
     @GetMapping
     public ResponseEntity<List<Venda>> listarVendas(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
         
-        // Chama o método do serviço que agora lida com os filtros
         List<Venda> vendas = vendaService.listarVendasComFiltro(dataInicio, dataFim);
 
         if (vendas.isEmpty()) {
             return ResponseEntity.noContent().build(); // HTTP 204 se a lista estiver vazia
         }
-        // Lembre-se da sugestão de retornar DTOs em vez de entidades.
-        // Por ora, mantendo o retorno da entidade.
+        
         return ResponseEntity.ok(vendas);
     }
 
@@ -59,9 +52,6 @@ public class VendaController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Venda> buscarVendaPorId(@PathVariable Long id) {
-        // O vendaService.buscarVendaPorId(id) agora lança ResourceNotFoundException
-        // se a venda não for encontrada, conforme ajustamos no VendaService.
-        // Essa exceção será capturada pelo seu GlobalExceptionHandler e convertida
         // em uma resposta HTTP 404 adequada.
         Venda venda = vendaService.buscarVendaPorId(id);
         return ResponseEntity.ok(venda);

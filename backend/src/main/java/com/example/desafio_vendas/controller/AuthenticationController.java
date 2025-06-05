@@ -19,7 +19,6 @@ public class AuthenticationController {
     @Autowired
     private JwtTokenService jwtTokenService;
 
-    // Usuário e senha estáticos (defina em application.properties ou hardcoded para simplicidade)
     @Value("${api.static.user.username}")
     private String staticUsername;
 
@@ -29,9 +28,6 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<TokenJWTDTO> login(@RequestBody UsuarioLoginDTO dadosLogin) {
-        // Validação do usuário estático
-        // Em um cenário real, você usaria o AuthenticationManager do Spring Security
-        // e um UserDetailsService para validar contra um banco de dados.
         if (staticUsername.equals(dadosLogin.getUsuario()) && staticPassword.equals(dadosLogin.getSenha())) {
             String tokenJWT = jwtTokenService.gerarToken(dadosLogin.getUsuario());
             return ResponseEntity.ok(new TokenJWTDTO(tokenJWT));
