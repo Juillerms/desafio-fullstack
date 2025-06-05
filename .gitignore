@@ -1,0 +1,59 @@
+# Arquivo .gitignore consolidado para o projeto Full Stack
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+hs_err_pid*
+
+# #######################
+# BACKEND (Java / Maven)
+# #######################
+**/target/
+.project
+.classpath
+.settings/
+.factorypath
+.springBeans
+.sts4-cache
+
+# #######################
+# FRONTEND (Node / React)
+# #######################
+**/node_modules/
+frontend/build/
+/coverage
+/.pnp
+.pnp.js
+
+# Arquivos de ambiente locais (nunca devem ser enviados para o repositório)
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# ######################################
+# ARQUIVOS DE IDE E SISTEMA OPERACIONAL
+# ######################################
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Mac & Windows
+.DS_Store
+Thumbs.db
