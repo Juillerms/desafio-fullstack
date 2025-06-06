@@ -75,4 +75,14 @@ export const addVenda = async (vendaData) => {
   }
 };
 
+export const deleteVenda = async (idVenda) => {
+  try {
+    const response = await apiClient.delete(`/vendas/${idVenda}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Erro ao deletar venda com ID ${idVenda}:`, error.response?.data || error.message);
+    throw error.response?.data || { message: 'Falha ao deletar a venda.' };
+  }
+};
+
 export default apiClient;

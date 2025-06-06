@@ -324,3 +324,17 @@ table tbody tr:hover {
 .add-venda-button:hover {
   background-color: #218838;
 }
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}

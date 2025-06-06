@@ -1,12 +1,14 @@
 package com.example.desafio_vendas.controller;
 
-import com.example.desafio_vendas.dto.CriarVendaDTO; // Importa o novo DTO
+import com.example.desafio_vendas.dto.CriarVendaDTO; 
+import org.springframework.http.HttpStatus;
+
 import com.example.desafio_vendas.model.Venda;
 import com.example.desafio_vendas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*; // Importa PostMapping, RequestBody, etc.
+import org.springframework.web.bind.annotation.*; 
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -15,15 +17,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vendas")
-// A anotação @CrossOrigin foi removida daqui, pois agora é gerenciada globalmente no SecurityConfig.
 public class VendaController {
 
     @Autowired
     private VendaService vendaService;
 
-    /**
-     * Lista vendas, com capacidade de filtro por data de início e data de fim.
-     */
     @GetMapping
     public ResponseEntity<List<Venda>> listarVendas(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
@@ -38,13 +36,17 @@ public class VendaController {
         return ResponseEntity.ok(vendas);
     }
 
-    /**
-     * Busca uma venda específica pelo seu ID.
-     */
+    
     @GetMapping("/{id}")
     public ResponseEntity<Venda> buscarVendaPorId(@PathVariable Long id) {
         Venda venda = vendaService.buscarVendaPorId(id);
         return ResponseEntity.ok(venda);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarVenda(@PathVariable Long id) {
+        vendaService.deletarVenda(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -56,7 +58,6 @@ public class VendaController {
      */
     @PostMapping
     public ResponseEntity<Venda> criarVenda(@RequestBody CriarVendaDTO dados, UriComponentsBuilder uriBuilder) {
-        // Converte o DTO para a entidade Venda
         Venda novaVenda = new Venda();
         novaVenda.setNomeProduto(dados.getNomeProduto());
         novaVenda.setQuantidadeVendida(dados.getQuantidadeVendida());
@@ -65,11 +66,8 @@ public class VendaController {
 
         Venda vendaSalva = vendaService.salvarVenda(novaVenda);
 
-        // Constrói a URI para o novo recurso criado (boa prática REST)
-        // Ex: http://localhost:8080/vendas/21
         URI uri = uriBuilder.path("/vendas/{id}").buildAndExpand(vendaSalva.getId()).toUri();
 
-        // Retorna a resposta 201 Created
         return ResponseEntity.created(uri).body(vendaSalva);
     }
 }

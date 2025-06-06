@@ -5,7 +5,8 @@ import LineChart from './components/LineChart';
 import Filters from './components/Filters';
 import Login from './components/Login';
 import AddVenda from './components/Addvenda';
-import { fetchVendas, fetchVendaById, logout } from './services/api';
+import DeleteVendaModal from './components/DeleteVendaModal';
+import { fetchVendas, fetchVendaById, logout, deleteVenda } from './services/api';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
@@ -14,6 +15,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentFilters, setCurrentFilters] = useState({});
+  const [vendaParaDeletar, setVendaParaDeletar] = useState(null);
 
   const [vendaIdInput, setVendaIdInput] = useState('');
   const [encontradaVenda, setEncontradaVenda] = useState(null);
@@ -57,6 +59,26 @@ function App() {
     setShowAddVendaForm(false);
     loadVendas(currentFilters);
   }, [currentFilters, loadVendas]); 
+
+  const handleDeleteRequest = (venda) => {
+        setVendaParaDeletar(venda);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!vendaParaDeletar) return;
+
+        try {
+            await deleteVenda(vendaParaDeletar.id);
+            setVendaParaDeletar(null); 
+            loadVendas(currentFilters); 
+        } catch (err) {
+            setError(err.message || 'Falha ao deletar a venda.');
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setVendaParaDeletar(null);
+    };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -122,6 +144,14 @@ function App() {
         />
       )}
 
+      {vendaParaDeletar && (
+                <DeleteVendaModal
+                    venda={vendaParaDeletar}
+                    onConfirm={handleConfirmDelete}
+                    onClose={handleCancelDelete}
+                />
+            )}
+
       <main className="App-main">
         <div className="main-actions">
           <button onClick={() => setShowAddVendaForm(true)} className="add-venda-button">
@@ -141,7 +171,6 @@ function App() {
               {filteredVendas.length > 0 ? (
                 <div className="table-container">
                   <table>
-                    {/* ... cabeçalho da tabela ... */}
                     <thead>
                         <tr>
                             <th>ID da Venda</th>
@@ -149,6 +178,7 @@ function App() {
                             <th>Quantidade</th>
                             <th>Data da Venda</th>
                             <th>Valor Total</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -159,6 +189,9 @@ function App() {
                           <td>{venda.quantidadeVendida}</td>
                           <td>{new Date(venda.dataVenda + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
                           <td>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(venda.valorTotal)}</td>
+                          <td>
+                            <button onClick={() => handleDeleteRequest(venda)} className="delete-button">Deletar</button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
