@@ -6,7 +6,7 @@ import com.example.desafio_vendas.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate; // Importe LocalDate
+import java.time.LocalDate; 
 import java.util.List;
 
 @Service
@@ -45,7 +45,6 @@ public class VendaService {
     // O método listarTodasAsVendas() original pode ser mantido se você quiser uma forma
     // explícita de buscar todas sem passar null para o método de filtro,
     // ou pode ser removido se listarVendasComFiltro(null, null) for o suficiente.
-    // Por ora, vou mantê-lo como no seu código original.
     public List<Venda> listarTodasAsVendas() {
         return vendaRepository.findAll();
     }

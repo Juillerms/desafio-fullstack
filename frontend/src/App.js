@@ -6,8 +6,8 @@ import Filters from './components/Filters';
 import Login from './components/Login';
 import AddVenda from './components/Addvenda';
 import DeleteVendaModal from './components/DeleteVendaModal';
-import FindVendaByIdModal from './components/FindVendaByIdModal'; // Importar o novo modal
-import { fetchVendas, deleteVenda, logout } from './services/api'; // Remover fetchVendaById
+import FindVendaByIdModal from './components/FindVendaByIdModal'; 
+import { fetchVendas, deleteVenda, logout } from './services/api'; 
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
@@ -18,14 +18,7 @@ function App() {
   const [currentFilters, setCurrentFilters] = useState({});
   const [vendaParaDeletar, setVendaParaDeletar] = useState(null);
   const [showAddVendaForm, setShowAddVendaForm] = useState(false);
-  const [showFindVendaModal, setShowFindVendaModal] = useState(false); // Novo estado para controlar o modal de busca
-
-  // REMOVIDOS os estados relacionados à busca por ID que foram para o novo modal
-  // const [vendaIdInput, setVendaIdInput] = useState('');
-  // const [encontradaVenda, setEncontradaVenda] = useState(null);
-  // const [loadingEncontradaVenda, setLoadingEncontradaVenda] = useState(false);
-  // const [errorEncontradaVenda, setErrorEncontradaVenda] = useState(null);
-  // const [buscaRealizada, setBuscaRealizada] = useState(false);
+  const [showFindVendaModal, setShowFindVendaModal] = useState(false); 
   
   const handleLogout = useCallback(() => {
     logout();
@@ -102,8 +95,6 @@ function App() {
     loadVendas(filters);
   };
 
-  // REMOVIDA a função handleBuscarVendaPorId que foi para o novo modal
-
   if (!isAuthenticated) {
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
@@ -130,7 +121,6 @@ function App() {
         />
       )}
 
-      {/* ADICIONADO: Renderização condicional do novo modal de busca */}
       {showFindVendaModal && (
         <FindVendaByIdModal onClose={() => setShowFindVendaModal(false)} />
       )}
@@ -140,7 +130,6 @@ function App() {
           <button onClick={() => setShowAddVendaForm(true)} className="add-venda-button">
             + Adicionar Nova Venda
           </button>
-          {/* ADICIONADO: Botão para abrir o modal de busca */}
           <button onClick={() => setShowFindVendaModal(true)} className="form-button" style={{marginLeft: '10px'}}>
             Consultar por ID
           </button>
@@ -202,8 +191,6 @@ function App() {
           </>
         )}
       </main>
-      
-      {/* REMOVIDA: A antiga seção de busca estática foi removida מכאן */}
     </div>
   );
 }

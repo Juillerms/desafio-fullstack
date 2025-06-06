@@ -223,11 +223,11 @@ table tbody tr:hover {
 
 .logout-button {
   position: absolute;
-  top: 50%; /* Centraliza verticalmente */
-  transform: translateY(-50%); /* Ajuste fino para centralização vertical */
-  right: 20px; /* Distância da direita */
-  background-color: #c82333; /* Cor de destaque, pode ser outra */
-  color: white; /* Texto escuro para contraste */
+  top: 50%; 
+  transform: translateY(-50%); 
+  right: 20px; 
+  background-color: #c82333;
+  color: white; 
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -238,7 +238,7 @@ table tbody tr:hover {
 }
 
 .logout-button:hover {
-  background-color: #c82333 /* Fica branco ao passar o mouse */
+  background-color: #c82333 
 }
 
 .modal-overlay {

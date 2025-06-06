@@ -31,7 +31,7 @@ public class DataLoader implements CommandLineRunner {
         vendaRepository.save(new Venda(null, "SSD 1TB NVMe", 3, LocalDate.now().minusDays(2), new BigDecimal("600.00")));
 
         String[] produtos = {"Smartphone Top", "Cadeira Gamer Confort", "Headset Pro", "Webcam Full HD", "Placa de Vídeo RTX"};
-        for (long i = 0; i < 15; i++) { // Gerar mais 15 vendas
+        for (long i = 0; i < 15; i++) { 
             String produto = produtos[ThreadLocalRandom.current().nextInt(produtos.length)];
             int quantidade = ThreadLocalRandom.current().nextInt(1, 11);
             LocalDate data = LocalDate.now().minusDays(ThreadLocalRandom.current().nextInt(1, 31));

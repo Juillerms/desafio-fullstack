@@ -12,15 +12,15 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity // Anotação para JPA
+@Entity 
 @Getter
 @Setter
-@NoArgsConstructor // Construtor padrão para JPA
+@NoArgsConstructor 
 @AllArgsConstructor
 public class Venda {
 
-    @Id // Chave primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Autoincremento
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
     private String nomeProduto;
     private int quantidadeVendida;
