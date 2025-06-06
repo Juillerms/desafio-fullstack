@@ -69,7 +69,7 @@
 
 .form-button {
   padding: 10px 15px;
-  background-color: #007bff; 
+  background-color: #4BC0C0; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -79,7 +79,7 @@
 }
 
 .form-button:hover {
-  background-color: #0056b3; 
+  background-color:rgb(50, 134, 134); 
 }
 
 .form-button:disabled {
@@ -208,7 +208,7 @@ table tbody tr:hover {
   position: absolute;
   top: 20px;
   right: 20px;
-  background-color: #dc3545;
+  background-color: #c82333;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -226,19 +226,19 @@ table tbody tr:hover {
   top: 50%; /* Centraliza verticalmente */
   transform: translateY(-50%); /* Ajuste fino para centralização vertical */
   right: 20px; /* Distância da direita */
-  background-color: #61dafb; /* Cor de destaque, pode ser outra */
-  color: #282c34; /* Texto escuro para contraste */
+  background-color: #c82333; /* Cor de destaque, pode ser outra */
+  color: white; /* Texto escuro para contraste */
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
   transition: background-color 0.2s ease-in-out;
 }
 
 .logout-button:hover {
-  background-color: #ffffff; /* Fica branco ao passar o mouse */
+  background-color: #c82333 /* Fica branco ao passar o mouse */
 }
 
 .modal-overlay {
@@ -282,7 +282,7 @@ table tbody tr:hover {
 .modal-content .form-group input {
   width: 100%;
   padding: 8px;
-  box-sizing: border-box; /* Garante que padding não aumente a largura */
+  box-sizing: border-box; 
 }
 
 .modal-actions {
@@ -294,7 +294,7 @@ table tbody tr:hover {
 
 .button-secondary {
   padding: 10px 15px;
-  background-color: #6c757d;
+  background-color: #4BC0C0;
   color: white;
   border: none;
   border-radius: 4px;
@@ -302,7 +302,7 @@ table tbody tr:hover {
 }
 
 .button-secondary:hover {
-  background-color: #5a6268;
+  background-color:rgb(51, 123, 123);
 }
 
 .main-actions {
@@ -311,7 +311,7 @@ table tbody tr:hover {
 }
 
 .add-venda-button {
-  background-color: #28a745;
+  background-color: rgb(35, 185, 45);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -322,11 +322,11 @@ table tbody tr:hover {
 }
 
 .add-venda-button:hover {
-  background-color: #218838;
+  background-color:rgb(34, 142, 41)
 }
 
 .delete-button {
-  background-color: #dc3545;
+  background-color:rgb(206, 55, 55) ;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -336,5 +336,5 @@ table tbody tr:hover {
 }
 
 .delete-button:hover {
-  background-color: #c82333;
+  background-color:rgb(137, 41, 41);
 }

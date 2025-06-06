@@ -6,7 +6,8 @@ import Filters from './components/Filters';
 import Login from './components/Login';
 import AddVenda from './components/Addvenda';
 import DeleteVendaModal from './components/DeleteVendaModal';
-import { fetchVendas, fetchVendaById, logout, deleteVenda } from './services/api';
+import FindVendaByIdModal from './components/FindVendaByIdModal'; // Importar o novo modal
+import { fetchVendas, deleteVenda, logout } from './services/api'; // Remover fetchVendaById
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
@@ -16,14 +17,16 @@ function App() {
   const [error, setError] = useState(null);
   const [currentFilters, setCurrentFilters] = useState({});
   const [vendaParaDeletar, setVendaParaDeletar] = useState(null);
-
-  const [vendaIdInput, setVendaIdInput] = useState('');
-  const [encontradaVenda, setEncontradaVenda] = useState(null);
-  const [loadingEncontradaVenda, setLoadingEncontradaVenda] = useState(false);
-  const [errorEncontradaVenda, setErrorEncontradaVenda] = useState(null);
-  const [buscaRealizada, setBuscaRealizada] = useState(false);
   const [showAddVendaForm, setShowAddVendaForm] = useState(false);
+  const [showFindVendaModal, setShowFindVendaModal] = useState(false); // Novo estado para controlar o modal de busca
 
+  // REMOVIDOS os estados relacionados à busca por ID que foram para o novo modal
+  // const [vendaIdInput, setVendaIdInput] = useState('');
+  // const [encontradaVenda, setEncontradaVenda] = useState(null);
+  // const [loadingEncontradaVenda, setLoadingEncontradaVenda] = useState(false);
+  // const [errorEncontradaVenda, setErrorEncontradaVenda] = useState(null);
+  // const [buscaRealizada, setBuscaRealizada] = useState(false);
+  
   const handleLogout = useCallback(() => {
     logout();
     setIsAuthenticated(false);
@@ -61,24 +64,24 @@ function App() {
   }, [currentFilters, loadVendas]); 
 
   const handleDeleteRequest = (venda) => {
-        setVendaParaDeletar(venda);
-    };
+    setVendaParaDeletar(venda);
+  };
 
-    const handleConfirmDelete = async () => {
-        if (!vendaParaDeletar) return;
+  const handleConfirmDelete = async () => {
+    if (!vendaParaDeletar) return;
 
-        try {
-            await deleteVenda(vendaParaDeletar.id);
-            setVendaParaDeletar(null); 
-            loadVendas(currentFilters); 
-        } catch (err) {
-            setError(err.message || 'Falha ao deletar a venda.');
-        }
-    };
-
-    const handleCancelDelete = () => {
+    try {
+        await deleteVenda(vendaParaDeletar.id);
         setVendaParaDeletar(null);
-    };
+        loadVendas(currentFilters);
+    } catch (err) {
+        setError(err.message || 'Falha ao deletar a venda.');
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setVendaParaDeletar(null);
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -99,32 +102,7 @@ function App() {
     loadVendas(filters);
   };
 
-  const handleBuscarVendaPorId = async () => {
-    if (!vendaIdInput.trim()) {
-      alert('Por favor, insira um ID de venda.');
-      setEncontradaVenda(null);
-      setErrorEncontradaVenda(null);
-      setBuscaRealizada(false);
-      return;
-    }
-    setLoadingEncontradaVenda(true);
-    setErrorEncontradaVenda(null);
-    setEncontradaVenda(null);
-    setBuscaRealizada(true);
-
-    try {
-      const data = await fetchVendaById(vendaIdInput);
-      setEncontradaVenda(data);
-      if (data === null) {
-        setErrorEncontradaVenda(`Nenhuma venda encontrada com o ID: ${vendaIdInput}`);
-      }
-    } catch (err) {
-      console.error("Erro ao buscar venda por ID no App.js:", err);
-      setErrorEncontradaVenda(err.detalhe || err.message || `Falha ao buscar venda com ID: ${vendaIdInput}.`);
-    } finally {
-      setLoadingEncontradaVenda(false);
-    }
-  };
+  // REMOVIDA a função handleBuscarVendaPorId que foi para o novo modal
 
   if (!isAuthenticated) {
     return <Login onLoginSuccess={handleLoginSuccess} />;
@@ -145,17 +123,26 @@ function App() {
       )}
 
       {vendaParaDeletar && (
-                <DeleteVendaModal
-                    venda={vendaParaDeletar}
-                    onConfirm={handleConfirmDelete}
-                    onClose={handleCancelDelete}
-                />
-            )}
+        <DeleteVendaModal
+          venda={vendaParaDeletar}
+          onConfirm={handleConfirmDelete}
+          onClose={handleCancelDelete}
+        />
+      )}
+
+      {/* ADICIONADO: Renderização condicional do novo modal de busca */}
+      {showFindVendaModal && (
+        <FindVendaByIdModal onClose={() => setShowFindVendaModal(false)} />
+      )}
 
       <main className="App-main">
         <div className="main-actions">
           <button onClick={() => setShowAddVendaForm(true)} className="add-venda-button">
             + Adicionar Nova Venda
+          </button>
+          {/* ADICIONADO: Botão para abrir o modal de busca */}
+          <button onClick={() => setShowFindVendaModal(true)} className="form-button" style={{marginLeft: '10px'}}>
+            Consultar por ID
           </button>
         </div>
 
@@ -172,14 +159,14 @@ function App() {
                 <div className="table-container">
                   <table>
                     <thead>
-                        <tr>
-                            <th>ID da Venda</th>
-                            <th>Nome do Produto</th>
-                            <th>Quantidade</th>
-                            <th>Data da Venda</th>
-                            <th>Valor Total</th>
-                            <th>Ações</th>
-                        </tr>
+                      <tr>
+                        <th>ID da Venda</th>
+                        <th>Nome do Produto</th>
+                        <th>Quantidade</th>
+                        <th>Data da Venda</th>
+                        <th>Valor Total</th>
+                        <th>Ações</th>
+                      </tr>
                     </thead>
                     <tbody>
                       {filteredVendas.map((venda) => (
@@ -216,50 +203,7 @@ function App() {
         )}
       </main>
       
-      <section className="buscar-venda-section">
-        <h2>Consultar Venda por ID</h2>
-        <div className="form-group">
-          <input
-            type="number"
-            placeholder="Digite o ID da Venda"
-            value={vendaIdInput}
-            onChange={(e) => {
-              setVendaIdInput(e.target.value);
-              setBuscaRealizada(false);
-              setEncontradaVenda(null);
-              setErrorEncontradaVenda(null);
-            }}
-            className="form-input"
-          />
-          <button
-            onClick={handleBuscarVendaPorId}
-            disabled={loadingEncontradaVenda || !vendaIdInput.trim()}
-            className="form-button"
-          >
-            {loadingEncontradaVenda ? 'Buscando...' : 'Buscar Venda'}
-          </button>
-        </div>
-
-        {loadingEncontradaVenda && <p className="App-loading">Consultando venda...</p>}
-
-        {errorEncontradaVenda && !loadingEncontradaVenda && (
-          <p className="App-error">Erro: {errorEncontradaVenda}</p>
-        )}
-
-        {buscaRealizada && !loadingEncontradaVenda && !errorEncontradaVenda && encontradaVenda && (
-          <div className="venda-detalhes">
-            <h3>Detalhes da Venda ID: {encontradaVenda.id}</h3>
-            <p><strong>Nome do Produto:</strong> {encontradaVenda.nomeProduto}</p>
-            <p><strong>Quantidade Vendida:</strong> {encontradaVenda.quantidadeVendida}</p>
-            <p><strong>Data da Venda:</strong> {new Date(encontradaVenda.dataVenda + 'T00:00:00').toLocaleDateString('pt-BR')}</p>
-            <p><strong>Valor Total:</strong> {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(encontradaVenda.valorTotal)}</p>
-          </div>
-        )}
-
-        {buscaRealizada && !loadingEncontradaVenda && !errorEncontradaVenda && !encontradaVenda && (
-           <p>Nenhuma venda encontrada com o ID: {vendaIdInput}.</p>
-        )}
-      </section>
+      {/* REMOVIDA: A antiga seção de busca estática foi removida מכאן */}
     </div>
   );
 }

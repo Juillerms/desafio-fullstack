@@ -28,7 +28,6 @@ const BarChart = ({ vendasData, title }) => {
     const vendasPorNomeProduto = vendas.reduce((acc, venda) => {
       const produto = venda.nomeProduto || 'Desconhecido'; 
       acc[produto] = (acc[produto] || 0) + venda.quantidadeVendida; 
-      acc[produto] = (acc[produto] || 0) + 1;
       return acc;
     }, {});
 

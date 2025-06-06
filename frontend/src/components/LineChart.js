@@ -58,7 +58,7 @@ const LineChart = ({ vendasData, title }) => {
           label: 'Valor Total de Vendas por Dia',
           data: dataPoints,
           borderColor: 'rgb(54, 162, 235)', 
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
           tension: 0.1,
           fill: false, 
         },
