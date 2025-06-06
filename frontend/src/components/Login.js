@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { login } from '../services/api';
 
-// O componente recebe uma função 'onLoginSuccess' como prop
-// para notificar o App.js quando o login for bem-sucedido.
 const Login = ({ onLoginSuccess }) => {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
@@ -10,17 +8,14 @@ const Login = ({ onLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Impede o recarregamento da página
+    e.preventDefault(); 
     setLoading(true);
     setError('');
 
     try {
-      // Chama a função de login da nossa api.js
       await login({ usuario, senha });
-      // Se chegou aqui, o login funcionou
       onLoginSuccess();
     } catch (err) {
-      // Se a API retornar um erro (ex: 401 Unauthorized), ele será capturado aqui
       console.error('Falha no login:', err);
       setError('Usuário ou senha inválidos. Por favor, tente novamente.');
     } finally {

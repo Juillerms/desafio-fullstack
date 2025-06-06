@@ -65,4 +65,14 @@ export const fetchVendaById = async (idVenda) => {
   }
 };
 
+export const addVenda = async (vendaData) => {
+  try {
+    const response = await apiClient.post('/vendas', vendaData);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao adicionar venda:', error.response?.data || error.message);
+    throw error.response?.data || { message: 'Falha ao criar nova venda.' };
+  }
+};
+
 export default apiClient;

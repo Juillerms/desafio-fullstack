@@ -1,44 +1,38 @@
 package com.example.desafio_vendas.controller;
 
+import com.example.desafio_vendas.dto.CriarVendaDTO; // Importa o novo DTO
 import com.example.desafio_vendas.model.Venda;
 import com.example.desafio_vendas.service.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*; // Importa PostMapping, RequestBody, etc.
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/vendas")
-@CrossOrigin(origins = "http://localhost:3000")
+// A anotação @CrossOrigin foi removida daqui, pois agora é gerenciada globalmente no SecurityConfig.
 public class VendaController {
 
     @Autowired
     private VendaService vendaService;
 
     /**
-     .
-     *
-     * @param dataInicio Data de início do filtro (formato YYYY-MM-DD).
-     * @param dataFim    Data de fim do filtro (formato YYYY-MM-DD).
-     * @return 
+     * Lista vendas, com capacidade de filtro por data de início e data de fim.
      */
     @GetMapping
     public ResponseEntity<List<Venda>> listarVendas(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
         
-        List<Venda> vendas = vendaService.listarVendasComFiltro(dataInicio, dataFim);
+        List<Venda> vendas = vendaService.listarVendasComFiltro(dataInicio, dataFim); // Passando null para produtoId por enquanto
 
         if (vendas.isEmpty()) {
-            return ResponseEntity.noContent().build(); // HTTP 204 se a lista estiver vazia
+            return ResponseEntity.noContent().build();
         }
         
         return ResponseEntity.ok(vendas);
@@ -46,14 +40,36 @@ public class VendaController {
 
     /**
      * Busca uma venda específica pelo seu ID.
-     * @param id O ID da venda a ser buscada.
-     * @return ResponseEntity contendo a Venda se encontrada, ou levará a um 404
-     * (via GlobalExceptionHandler para ResourceNotFoundException) se não encontrada.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Venda> buscarVendaPorId(@PathVariable Long id) {
-        // em uma resposta HTTP 404 adequada.
         Venda venda = vendaService.buscarVendaPorId(id);
         return ResponseEntity.ok(venda);
+    }
+
+    /**
+     * Cria uma nova venda.
+     * @param dados Os dados da nova venda, vindos do corpo da requisição.
+     * @param uriBuilder Injetado pelo Spring para ajudar a construir a URI de resposta.
+     * @return Uma resposta com status 201 Created, a URI do novo recurso no cabeçalho Location,
+     * e o corpo da venda salva na resposta.
+     */
+    @PostMapping
+    public ResponseEntity<Venda> criarVenda(@RequestBody CriarVendaDTO dados, UriComponentsBuilder uriBuilder) {
+        // Converte o DTO para a entidade Venda
+        Venda novaVenda = new Venda();
+        novaVenda.setNomeProduto(dados.getNomeProduto());
+        novaVenda.setQuantidadeVendida(dados.getQuantidadeVendida());
+        novaVenda.setDataVenda(dados.getDataVenda());
+        novaVenda.setValorTotal(dados.getValorTotal());
+
+        Venda vendaSalva = vendaService.salvarVenda(novaVenda);
+
+        // Constrói a URI para o novo recurso criado (boa prática REST)
+        // Ex: http://localhost:8080/vendas/21
+        URI uri = uriBuilder.path("/vendas/{id}").buildAndExpand(vendaSalva.getId()).toUri();
+
+        // Retorna a resposta 201 Created
+        return ResponseEntity.created(uri).body(vendaSalva);
     }
 }
