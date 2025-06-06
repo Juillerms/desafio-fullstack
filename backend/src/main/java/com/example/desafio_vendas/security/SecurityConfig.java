@@ -31,14 +31,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // <--- ADICIONE ESTA LINHA PARA ATIVAR O CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
                     req.requestMatchers("/h2-console/**").permitAll();
-                    // As linhas abaixo estão comentadas, o que está CORRETO para proteger os endpoints
-                    // req.requestMatchers(HttpMethod.GET, "/vendas").permitAll();
-                    // req.requestMatchers(HttpMethod.GET, "/vendas/**").permitAll();
+                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
