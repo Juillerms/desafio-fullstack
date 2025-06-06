@@ -71,9 +71,25 @@ git clone https://github.com/juillerms/desafio-fullstack.git
 # 2. Navegue até o diretório do backend
 cd desafio-fullstack/backend
 
+# 2.1. Compile, teste e empacotar seu projeto, criando o diretório target, caso ele não tenha sido criado
+./mvnw install
+
 # 3. Compile e execute o projeto com o Maven Wrapper
 ./mvnw spring-boot:run
 ```
+
+#### 1.1 Alternativa: Usando a Extensão Maven no VS Code
+Se você possui a extensão Maven for Java da Microsoft instalada no seu VS Code, pode executar o projeto de forma gráfica e integrada ao editor:
+
+1. Abra a pasta desafio-fullstack/backend no VS Code.
+2. Na barra lateral esquerda, clique no ícone do Maven ( M ) para abrir a visualização do Maven.
+3. Expanda o seu projeto desafio-vendas.
+4. Expanda a seção Plugins e em seguida spring-boot.
+5. Clique no ícone de ▶️ (play) ao lado do comando spring-boot:run para iniciar a aplicação.
+
+#### 1.2 Alternativa: VS Code
+1. Abra o arquivo *DesafioVendasApplication.java*
+2. Clique no ícone de ▶️ (play) para executar o arquivo
 
 - A API estará disponível em: http://localhost:8080
 
